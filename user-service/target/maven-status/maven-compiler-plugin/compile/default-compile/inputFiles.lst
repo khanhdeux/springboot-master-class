@@ -1,5 +1,12 @@
 /workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/controller/UserController.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/dto/UserRequestDTO.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/dto/UserResponseDTO.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/mapper/UserMapper.java
 /workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/model/User.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/config/DataInitializer.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/config/OpenApiConfig.java
 /workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/UserServiceApplication.java
 /workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/service/UserService.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/exception/UserNotFoundException.java
 /workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/repository/UserRepository.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/exception/GlobalExceptionHandler.java
