@@ -1,0 +1,17 @@
+# Ignoriere alle target-Ordner in JEDEM Unterverzeichnis
+**/target/
+
+# Ignoriere alle IDE-Dateien in JEDEM Unterverzeichnis
+**/.idea/
+**/.vscode/
+**/.settings/
+**/.classpath
+**/.project
+
+# Ignoriere Log-Dateien überall
+**/*.log
+
+# Ignoriere das Maven-Wrapper-Verzeichnis in den Sub-Modulen
+**/mvnw
+**/mvnw.cmd
+**/.mvn/
