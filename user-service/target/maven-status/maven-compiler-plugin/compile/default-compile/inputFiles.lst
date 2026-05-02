@@ -1,0 +1,5 @@
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/controller/UserController.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/model/User.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/UserServiceApplication.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/service/UserService.java
+/workspaces/springboot-master-class/user-service/src/main/java/com/example/userservice/repository/UserRepository.java
