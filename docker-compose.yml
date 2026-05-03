@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+    networks:
+      - tracing-network
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8080:8080"   
+    environment:
+      - MANAGEMENT_OTLP_TRACING_ENDPOINT=http://jaeger:4318/v1/traces
+    depends_on:
+      - jaeger
+    networks:
+      - tracing-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "8081:8081" 
+    environment:
+      - MANAGEMENT_OTLP_TRACING_ENDPOINT=http://jaeger:4318/v1/traces
+    depends_on:
+      - jaeger
+    networks:
+      - tracing-network
+
+networks:
+  tracing-network:
+    driver: bridge
