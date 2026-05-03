@@ -1,13 +1,26 @@
 <configuration>
+    <!-- 1. Bestehender Appender für die Konsole (Terminal) -->
     <appender name="jsonConsole" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <timestamp/><logLevel/><threadName/><loggerName/><message/><arguments/><stackTrace/>
-                <mdc/> <!-- Hier landen Trace-ID und Span-ID automatisch! -->
+                <timestamp/><logLevel/><threadName/><loggerName/><message/><arguments/><stackTrace/><mdc/>
             </providers>
         </encoder>
     </appender>
+
+    <!-- 2. NEU: Appender für Logstash (Netzwerk) -->
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <!-- Der Hostname 'logstash' kommt aus deiner docker-compose.yml -->
+        <destination>logstash:5044</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/><logLevel/><threadName/><loggerName/><message/><arguments/><stackTrace/><mdc/>
+            </providers>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="jsonConsole" />
+        <appender-ref ref="logstash" /> <!-- Dies aktiviert den Versand an Logstash -->
     </root>
 </configuration>
