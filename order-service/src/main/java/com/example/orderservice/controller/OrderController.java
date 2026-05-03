@@ -24,7 +24,7 @@ public class OrderController {
         log.info("Order-Service: Erstelle Bestellung für User {}", id);
         
         // Aufruf an den User-Service (Port 8080)
-        String user = restTemplate.getForObject("http://localhost:8080/api/users/" + id, String.class);
+        String user = restTemplate.getForObject("http://user-service:8080/api/users/" + id, String.class);
         
         log.info("Order-Service: User-Check erfolgreich: {}", user);
         return "Bestellung für " + user + " wurde erstellt!";
