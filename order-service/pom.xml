@@ -107,7 +107,26 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>             
+        </dependency>       
+
+        <!-- Spring Cloud Stream Core -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <!-- Für Kafka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-kafka</artifactId>
+            <version>4.1.0</version>
+        </dependency>
+        <!-- Für RabbitMQ -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+            <version>4.1.0</version>
+        </dependency>              
     </dependencies>
 
     <build>

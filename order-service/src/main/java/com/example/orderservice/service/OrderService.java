@@ -8,15 +8,19 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.orderservice.messaging.OrderMessageProducer;
+
 @Service
 public class OrderService {
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
     private final RestTemplate restTemplate;
+    private final OrderMessageProducer messageProducer;
     private final String USER_SERVICE_URL = "http://user-service:8080/api/users/";
 
-    public OrderService(RestTemplateBuilder builder) {
+    public OrderService(RestTemplateBuilder builder, OrderMessageProducer messageProducer) {
         // Der builder ist entscheidend für das Jaeger-Tracing!
         this.restTemplate = builder.build();
+        this.messageProducer = messageProducer;
     }
 
     /**
@@ -44,5 +48,14 @@ public class OrderService {
     public String fallbackUserCheck(String id, Throwable t) {
         log.warn("Order-Service: Fallback für User {} aktiviert. Grund: {}", id, t.getMessage());
         return "Gast-User (Notbetrieb)";
+    }
+
+    public void processOrderFullStack(String id, String signal) {
+        // 1. REST Call (Synchron)
+        String user = checkUserResilient(id);
+        
+        // 2. Messaging (Asynchron)
+        messageProducer.sendToRabbit(id, signal);
+        messageProducer.sendToKafka(id, signal);
     }
 }

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: user-service
+  
+  cloud:
+    # 1. Funktionen definieren (Consumer-Methoden)
+    function:
+      definition: orderSignal;tradingAnalytics
+    
+    # 2. Bindings und Binder konfigurieren
+    stream:
+      binders:
+        my-kafka:
+          type: kafka
+          environment:
+            spring.cloud.stream.kafka.binder.brokers: kafka:9092
+        my-rabbit:
+          type: rabbit
+          environment:
+            spring.rabbitmq.addresses: rabbitmq:5672
+
+      bindings:
+        orderSignal-in-0:
+          destination: rabbit-orders
+          binder: my-rabbit
+          group: user-service-group
+        tradingAnalytics-in-0:
+          destination: kafka-trading-log
+          binder: my-kafka
+          group: analytics-group

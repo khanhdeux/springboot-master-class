@@ -4,6 +4,26 @@ server:
 spring:
   application:
     name: order-service
+  cloud:
+    stream:
+      binders:
+        my-kafka:
+          type: kafka
+          environment:
+            spring.cloud.stream.kafka.binder.brokers: kafka:9092
+        my-rabbit:
+          type: rabbit
+          environment:
+            spring.rabbitmq.addresses: rabbitmq:5672
+
+      bindings:
+        # AUSGANG (out)
+        orderSignal-out-0:
+          destination: rabbit-orders
+          binder: my-rabbit
+        tradingAnalytics-out-0:
+          destination: kafka-trading-log
+          binder: my-kafka
 
 # Resilience4j Konfiguration
 resilience4j:

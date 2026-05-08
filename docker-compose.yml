@@ -14,22 +14,30 @@ services:
   user-service:
     build: ./user-service
     ports:
-      - "8080:8080"   
+      - "8080:8080"
     environment:
       - MANAGEMENT_OTLP_TRACING_ENDPOINT=http://jaeger:4318/v1/traces
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+      - SPRING_RABBITMQ_ADDRESSES=rabbitmq:5672
     depends_on:
       - jaeger
+      - kafka
+      - rabbitmq
     networks:
       - tracing-network
 
   order-service:
     build: ./order-service
     ports:
-      - "8081:8081" 
+      - "8081:8081"
     environment:
       - MANAGEMENT_OTLP_TRACING_ENDPOINT=http://jaeger:4318/v1/traces
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
+      - SPRING_RABBITMQ_ADDRESSES=rabbitmq:5672
     depends_on:
       - jaeger
+      - kafka
+      - rabbitmq
     networks:
       - tracing-network
 
@@ -87,7 +95,39 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
     networks:
-      - tracing-network   
+      - tracing-network
+      
+  # RabbitMQ für schnelle Aufgaben (Queues)
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - tracing-network
+
+  # Kafka für Event-Streaming (Logs)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    networks:
+      - tracing-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - tracing-network
 
 networks:
   tracing-network:
