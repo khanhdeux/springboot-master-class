@@ -21,6 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    // Pfad: /api/users/info/version
+    @GetMapping("/info/version")
+    public String getVersion() {
+        return "v3";
+    }
+
     // GET ALL
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
