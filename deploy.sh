@@ -2,7 +2,7 @@
 set -e
 
 # HIER DIE NEUE VERSION DEFINIEREN
-VERSION="v3"
+VERSION="v4"
 
 echo "1. Baue Java App für Version $VERSION..."
 cd user-service

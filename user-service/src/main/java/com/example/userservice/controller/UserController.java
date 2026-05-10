@@ -24,7 +24,7 @@ public class UserController {
     // Pfad: /api/users/info/version
     @GetMapping("/info/version")
     public String getVersion() {
-        return "v3";
+        return "v4";
     }
 
     // GET ALL

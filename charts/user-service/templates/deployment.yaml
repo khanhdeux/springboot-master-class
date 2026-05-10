@@ -5,6 +5,11 @@ metadata:
   labels:
     {{- include "user-service.labels" . | nindent 4 }}
 spec:
+  strategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxSurge: 1       # Wie viele Pods zusätzlich zu den 2 Replicas maximal entstehen dürfen
+        maxUnavailable: 0 # Es darf niemals ein Pod offline gehen (garantiert Verfügbarkeit)
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
