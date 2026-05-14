@@ -15,3 +15,6 @@
 **/mvnw
 **/mvnw.cmd
 **/.mvn/
+
+# Ignoriere AWS
+.aws/dist/
