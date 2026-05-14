@@ -17,6 +17,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.data.domain.Page;
+
 @RestController
 @RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "*")
@@ -45,15 +47,23 @@ public class UserController {
     @GetMapping("/info/version")
     public String getVersion() {
         log.info("Versionsabfrage aufgerufen");
-        return "v1";
+        return "v2";
     }
 
     // GET ALL
-    @Operation(summary = "Alle Benutzer abrufen")
-    @GetMapping(produces = "application/json") // Präzisierung des Rückgabeformats
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.findAllUsers());
-    }
+    // @Operation(summary = "Alle Benutzer abrufen")
+    // @GetMapping(produces = "application/json") // Präzisierung des Rückgabeformats
+    // public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+    //     return ResponseEntity.ok(userService.findAllUsers());
+    // }
+
+    @Operation(summary = "Alle Benutzer mit Pagination")
+    @GetMapping
+    public ResponseEntity<Page<UserResponseDTO>> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        return ResponseEntity.ok(userService.findAllUsersPaginated(page, size));
+    }  
 
     // GET BY ID
     @Operation(summary = "Einen Benutzer per ID finden")

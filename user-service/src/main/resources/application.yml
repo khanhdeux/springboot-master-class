@@ -1,6 +1,11 @@
 spring:
   application:
     name: user-service
+
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: 6379    
   
   cloud:
     # 1. Funktionen definieren (Consumer-Methoden)

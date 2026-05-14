@@ -141,6 +141,14 @@ services:
     networks:
       - tracing-network      
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - tracing-network      
+
 networks:
   tracing-network:
     driver: bridge

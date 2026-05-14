@@ -12,11 +12,13 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initDatabase(UserRepository repository) {
         return args -> {
-            // Wir prüfen, ob schon Daten da sind, um Dopplungen zu vermeiden
             if (repository.count() == 0) {
-                repository.save(new User(null, "Admin_Khanh", "admin@dev.de"));
-                repository.save(new User(null, "Trader_Expert", "trader@finance.com"));
-                System.out.println(">> Testdaten erfolgreich geladen!");
+                for (int i = 1; i <= 20; i++) {
+                    repository.save(new User(null,
+                        "User_" + i,
+                        "user" + i + "@example.com"));
+                }
+                System.out.println(">> 20 Testuser geladen!");
             }
         };
     }

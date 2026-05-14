@@ -10,6 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,10 +44,17 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Page<UserResponseDTO> findAllUsersPaginated(int page, int size) {
+        log.info("Fetching users page={} size={} from DB", page, size);
+        return userRepository.findAll(PageRequest.of(page, size))
+                .map(userMapper::toResponseDto);
+    }
+
     /**
      * Findet einen User per ID oder wirft eine Exception.
      */
-    @Transactional(readOnly = true)
+    @Cacheable(value = "users", key = "#id")
     public UserResponseDTO findById(Long id) {
         log.info("Fetching user with id: {}", id);
         User user = userRepository.findById(id)
@@ -76,6 +89,7 @@ public class UserService {
      * MapStruct ignoriert null-Werte im DTO.
      */
     @Transactional
+    @CacheEvict(value = "users", key = "#id")
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
         log.info("Updating user with id: {}", id);
         User existingUser = userRepository.findById(id)
@@ -95,6 +109,7 @@ public class UserService {
      * Löscht einen User.
      */
     @Transactional
+    @CacheEvict(value = "users", key = "#id")
     public void delete(Long id) {
         log.info("Deleting user with id: {}", id);
         if (!userRepository.existsById(id)) {
