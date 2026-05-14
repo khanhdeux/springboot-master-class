@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: user-service Infrastruktur
+
+Resources:
+
+  # S3 Bucket für Logs
+  LogsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: user-service-logs-cf
+
+  # SQS Queue für Orders
+  OrdersQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: orders-queue-cf
+      MessageRetentionPeriod: 1209600  # 14 Tage
+
+  # Secret für RabbitMQ
+  RabbitMQSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: user-service/rabbitmq-cf
+      SecretString: '{"host":"rabbitmq","port":"5672","username":"guest","password":"guest"}'
+
+Outputs:
+  LogsBucketName:
+    Value: !Ref LogsBucket
+  OrdersQueueUrl:
+    Value: !Ref OrdersQueue
+  RabbitMQSecretArn:
+    Value: !Ref RabbitMQSecret

@@ -129,6 +129,18 @@ services:
     networks:
       - tracing-network
 
+  localstack:
+    image: localstack/localstack:3
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sqs,sns,cloudformation,secretsmanager
+      - DEFAULT_REGION=eu-central-1
+      - DEBUG=0
+    networks:
+      - tracing-network      
+
 networks:
   tracing-network:
     driver: bridge

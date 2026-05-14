@@ -60,6 +60,17 @@ public class UserService {
         return userMapper.toResponseDto(savedUser);
     }
 
+    @Transactional
+    public List<UserResponseDTO> saveAll(List<UserRequestDTO> dtos) {
+        log.info("Bulk-Saving {} users", dtos.size());
+        List<User> users = dtos.stream()
+                .map(userMapper::toEntity)
+                .collect(Collectors.toList());
+        return userRepository.saveAll(users).stream()
+                .map(userMapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Aktualisiert einen User (Full PUT oder Partial PATCH).
      * MapStruct ignoriert null-Werte im DTO.
@@ -73,9 +84,10 @@ public class UserService {
         // Überträgt nur nicht-leere Felder vom DTO auf die Entity
         userMapper.updateEntityFromDto(dto, existingUser);
 
-        // Dank @Transactional und Dirty Checking wird die Änderung 
-        // automatisch beim Commit in die DB geschrieben. 
-        // userRepository.save(existingUser) ist optional, aber oft für Klarheit beibehalten.
+        // Dank @Transactional und Dirty Checking wird die Änderung
+        // automatisch beim Commit in die DB geschrieben.
+        // userRepository.save(existingUser) ist optional, aber oft für Klarheit
+        // beibehalten.
         return userMapper.toResponseDto(existingUser);
     }
 
