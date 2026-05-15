@@ -174,3 +174,23 @@ aws --endpoint-url=http://localhost:4566 \
 - Prüfen    
 aws --endpoint-url=http://localhost:4566 s3 ls | grep cf
 aws --endpoint-url=http://localhost:4566 sqs list-queues | grep cf
+
+
+## Authentification - Authorization
+### Eigenes JWT
+POST /auth/register
+  → AuthController → AuthService
+  → Passwort verschlüsseln → User in DB speichern
+  → JWT Token generieren → zurückgeben
+
+POST /auth/login
+  → AuthController → AuthService
+  → AuthenticationManager prüft Passwort
+  → JWT Token generieren → zurückgeben
+
+GET /api/v1/users/1  (mit Token im Header)
+  → JwtAuthFilter liest Token
+  → JwtUtil validiert Token
+  → UserDetailsService lädt User
+  → SecurityContext gesetzt
+  → UserController verarbeitet Request

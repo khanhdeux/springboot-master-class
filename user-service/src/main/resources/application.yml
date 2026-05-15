@@ -33,3 +33,7 @@ spring:
           destination: kafka-trading-log
           binder: my-kafka
           group: analytics-group
+
+jwt:
+  secret: "meinSuperGeheimesJwtSecretMindestens32Zeichen!!"
+  expiration: 86400000  # 24 Stunden in ms          
