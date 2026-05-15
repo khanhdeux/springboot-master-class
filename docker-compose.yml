@@ -147,7 +147,23 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - tracing-network      
+      - tracing-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    container_name: keycloak
+    command: start-dev --spi-login-protocol-openid-connect-legacy-logout-redirect-uri=true
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+      - KC_HTTP_RELATIVE_PATH=/
+      - KC_PROXY=edge
+    ports:
+      - "8180:8080"
+    networks:
+      - tracing-network         
 
 networks:
   tracing-network:

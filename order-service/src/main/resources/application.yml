@@ -24,6 +24,12 @@ spring:
         tradingAnalytics-out-0:
           destination: kafka-trading-log
           binder: my-kafka
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/myrealm  # ← localhost statt keycloak
+          jwk-set-uri: http://keycloak:8080/realms/myrealm/protocol/openid-connect/certs         
 
 # Resilience4j Konfiguration
 resilience4j:
